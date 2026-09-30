@@ -15,7 +15,7 @@ Lo que se manda en el `PUT`/`POST`. Complementa la documentación oficial del AP
 | `custom` | header, footer y márgenes del PDF *(sin documentar)* — ver abajo |
 | `preFill` | valores fijos `[{ name, value }]` que resuelven campos sin preguntarlos (p. ej. `country`) |
 | `preBuild`, `preBuildData` | prellenado en dos fases; `preBuildData` lista las preguntas de la primera fase |
-| `files` | documentos adjuntos que se piden al firmante con `package: true`: `[{ name, approve: "pending", optional? }]`. Un adjunto es obligatorio salvo `optional: true`; `required: false` no existe y el API lo rechaza |
+| `files` | documentos adjuntos que se piden al firmante con `package: true`: `[{ name, approve: "pending", optional?, preReq? }]`. Un adjunto es obligatorio salvo `optional: true`. `preReq` es el nombre de una cláusula Sí/No (`s`/`n`): el adjunto solo se pide si responden `s` |
 | `pagare`, `pagareData` | camino del pagaré electrónico |
 
 El `build` no se manda: el servidor lo incrementa en cada `PUT`, y eso es lo que invalida la caché del SDK.
