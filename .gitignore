@@ -1,0 +1,8 @@
+# Private keys never leave the machine.
+.env*
+keys.env
+*.keys
+# Working copies of templates pulled while testing.
+[0-9a-f]*/
+backup/
+deleted/
