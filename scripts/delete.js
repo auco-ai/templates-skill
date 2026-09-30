@@ -34,8 +34,9 @@ const client = args.client;
     return;
   }
 
+  let res;
   try {
-    await request(env, 'DELETE', { query: { id }, client });
+    res = await request(env, 'DELETE', { query: { id }, client });
   } catch (e) {
     if (/TEMPLATE_IN_USE/.test(e.message))
       throw new Error('not deleted: a contract created from this template is still in signature (TEMPLATE_IN_USE)');
@@ -43,7 +44,8 @@ const client = args.client;
       throw new Error(`not deleted: ${env} does not expose DELETE /template yet (${e.message})`);
     throw e;
   }
-  console.log(`\ndeleted from ${env}`);
+  const refs = (res.data ?? res).references ?? 0;
+  console.log(`\ndeleted from ${env}` + (refs ? ` — also deleted ${refs} reference link(s) to it` : ''));
 })().catch((e) => {
   console.error(e.message);
   process.exit(1);
