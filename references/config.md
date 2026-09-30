@@ -15,7 +15,7 @@ Lo que se manda en el `PUT`/`POST`. Complementa la documentación oficial del AP
 | `custom` | header, footer y márgenes del PDF *(sin documentar)* — ver abajo |
 | `preFill` | valores fijos `[{ name, value }]` que resuelven campos sin preguntarlos (p. ej. `country`) |
 | `preBuild`, `preBuildData` | prellenado en dos fases; `preBuildData` lista las preguntas de la primera fase |
-| `files` | documentos que se piden adjuntar `[{ name, approve: "pending", optional?, preReq? }]` |
+| `files` | documentos adjuntos que se piden al firmante con `package: true`: `[{ name, approve: "pending", optional? }]`. Un adjunto es obligatorio salvo `optional: true`; `required: false` no existe y el API lo rechaza |
 | `pagare`, `pagareData` | camino del pagaré electrónico |
 
 El `build` no se manda: el servidor lo incrementa en cada `PUT`, y eso es lo que invalida la caché del SDK.
@@ -103,6 +103,9 @@ Cada campo apunta al **nombre de una pregunta** (o de un `preFill`), no trae el 
 - `identification` hace falta en todo firmante que no sea `APPROVER`, o falla el proceso de firma. Acepta varias con `|`: `"cedula|cedula_ext|pasaporte"`.
 - `email` o `phone`, al menos uno, salvo si el firmante firma en el momento (`signature`): ahí no se le envía nada. Cuando van, tienen que apuntar a una pregunta `email`/`phone` o a un `preFill`.
 - `role: "APPROVER"` aprueba, no firma: no pasa por la resolución de datos.
+- `order` (número) hace la firma secuencial: cada participante recibe la invitación cuando firman los de turno anterior.
+- `package: true` marca al participante al que se le piden los adjuntos de `files`.
+- `country` e `identificationType` son **valores fijos** (`"CO"`, `"CC"`), no nombres de pregunta. Sirven cuando la identificación se pide con una pregunta que no es de tipo `identification` (que ya trae país y tipo).
 - `signature` apunta a una pregunta `type: "signature"`, para firmar dentro del formulario. La convención es `pregunta.name == type == signature`.
 
 ## Header, footer y márgenes: `custom` *(sin documentar)*
